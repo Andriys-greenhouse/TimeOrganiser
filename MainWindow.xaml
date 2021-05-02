@@ -5,8 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeOrganiser"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Time organiser" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         
+        <ListView x:Name="PersonView" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding BarsSegments}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Label Width="{Binding Lenght}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text=" "/>
+                            <TextBlock Text="{Binding Lenght}"/>
+                        </StackPanel>
+                    </Label>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

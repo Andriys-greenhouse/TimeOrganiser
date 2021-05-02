@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace TimeOrganiser
 {
@@ -20,8 +22,14 @@ namespace TimeOrganiser
     /// </summary>
     public partial class MainWindow : Window
     {
+        ObservableCollection<Segment> BarsSegments = new ObservableCollection<Segment>();
         public MainWindow()
         {
+            BarsSegments.Add(new Segment("sub 1", "", 5));
+            BarsSegments.Add(new Segment("sub 2", "", 10));
+            BarsSegments.Add(new Segment("sub 3", "", 15));
+            BarsSegments.Add(new Segment("sub 4", "", 20));
+            BarsSegments.Add(new Segment("sub 5", "", 5));
             InitializeComponent();
         }
     }
