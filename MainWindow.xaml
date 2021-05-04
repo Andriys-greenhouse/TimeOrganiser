@@ -5,31 +5,52 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeOrganiser"
         mc:Ignorable="d"
-        Title="Time organiser" Height="450" Width="800">
+        Title="Time organiser" Height="450" Width="800"
+        >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <ListView x:Name="PersonView" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding BarsSegments}">
+
+        <ListView x:Name="DetailBar" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding .}"
+                  Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <Label Width="{Binding Lenght}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}"/>
-                            <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Lenght}"/>
+                <DataTemplate >
+                    <Label Background="{Binding BackgroundColor}">
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Lenght}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Label>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="RealBar" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding .}" Width="350">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <Label Width="{Binding ShowLength}" Background="{Binding BackgroundColor}" Margin="-4.5, 0"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
         </ListView>
     </Grid>
 </Window>

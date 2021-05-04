@@ -14,23 +14,37 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace TimeOrganiser
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        ObservableCollection<Segment> BarsSegments = new ObservableCollection<Segment>();
+        ObservableCollection<Segment> BarSegments { get; set; } = new ObservableCollection<Segment>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
         {
-            BarsSegments.Add(new Segment("sub 1", "", 5));
-            BarsSegments.Add(new Segment("sub 2", "", 10));
-            BarsSegments.Add(new Segment("sub 3", "", 15));
-            BarsSegments.Add(new Segment("sub 4", "", 20));
-            BarsSegments.Add(new Segment("sub 5", "", 5));
             InitializeComponent();
+
+            BarSegments.Add(new Segment("sub 1", "", 50, Colors.Red));
+            BarSegments.Add(new Segment("sub 2", "", 200, Colors.Green));
+            BarSegments.Add(new Segment("sub 3", "", 300, Colors.Blue));
+            BarSegments.Add(new Segment("sub 4", "", 400, Colors.Brown));
+            BarSegments.Add(new Segment("sub 5", "", 10, Colors.Yellow));
+
+            //put this at end of created bar
+            int lenghtOfFinalSegment = 1440;
+            foreach(Segment seg in BarSegments)
+            {
+                lenghtOfFinalSegment -= seg.Lenght;
+            }
+            BarSegments.Add(new Segment("unspecified", "", lenghtOfFinalSegment, Colors.Gray));
+            RealBar.DataContext = BarSegments;
+            DetailBar.DataContext = BarSegments;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,14 @@ namespace TimeOrganiser
         public string Name { get; set; }
         public string Description { get; set; }
         public int Lenght { get; set; }
-        public Segment(string aName, string aDescription, int aLenght)
+        public double ShowLength { get { return Lenght/5; } }
+        public SolidColorBrush BackgroundColor { get; set; }
+        public Segment(string aName, string aDescription, int aLenght, Color aColor)
         {
             Name = aName;
             Description = aDescription;
             Lenght = aLenght;
+            BackgroundColor = new SolidColorBrush(aColor);
         }
     }
 }
