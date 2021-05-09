@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:TimeOrganiser"
         mc:Ignorable="d"
         Title="Time organiser" Height="450" Width="800"
-        >
+        FontSize="16">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -18,11 +19,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListView x:Name="DetailBar" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding .}"
-                  Grid.ColumnSpan="2">
+        <ListView x:Name="DetailBar" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Content}"
+                  Grid.ColumnSpan="3" SelectedIndex="{Binding BarSelectedIndex, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectionChanged="Bar_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate >
                     <Label Background="{Binding BackgroundColor}">
@@ -40,7 +43,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="RealBar" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding .}" Width="350">
+        <ListView x:Name="RealBar" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding Content}" Width="350"
+                  Grid.ColumnSpan="3" SelectedIndex="{Binding BarSelectedIndex, UpdateSourceTrigger=PropertyChanged}" 
+                  SelectionChanged="Bar_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate >
                     <Label Width="{Binding ShowLength}" Background="{Binding BackgroundColor}" Margin="-4.5, 0"/>
@@ -52,5 +57,38 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+
+        <ListView x:Name="TaskView" Grid.Column="1" Grid.Row="3" ItemsSource="{Binding .}"
+                  SelectionChanged="TaskView_SelectionChanged" Margin="0,10,10,0">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Title}" Margin="5"/>
+                        <TextBlock Text="{Binding DeadlineFormated}" Margin="5"/>
+                        <TextBlock Text="{Binding Importance}" Margin="5"/>
+                        <CheckBox IsChecked="{Binding Solved}" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel x:Name="TaskDetails" Grid.Column="2" Grid.Row="3" Margin="10,10,10,0">
+            <TextBlock Text="Title:"/>
+            <TextBlock Text="{Binding Title}" Margin="8,1" FontSize="14"/>
+            <TextBlock Text="Description:"/>
+            <TextBlock Text="{Binding Description}" Margin="8,1" FontSize="14"/>
+            <TextBlock Text="Deadline:"/>
+            <TextBlock Text="{Binding DeadlineFormated}" Margin="8,1" FontSize="14"/>
+            <TextBlock Text="Importance:"/>
+            <TextBlock Text="{Binding Importance}" Margin="8,1" FontSize="14"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
+            <Button x:Name="NewTaskButt" Content="New Task" Margin="3"/>
+            <Button x:Name="NewBarButt" Content="New Bar" Margin="3"/>
+            <Button x:Name="DeleteAllButt" Content="  Delete all&#xa;solved Tasks" Margin="3"
+                    MinWidth="100" Click="DeleteAllButt_Click"/>
+            <Button x:Name="SettingsButt" Content="Settings" Margin="3" Click="SettingsButt_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
