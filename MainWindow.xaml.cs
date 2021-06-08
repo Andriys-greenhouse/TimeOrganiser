@@ -99,3 +99,10 @@ namespace TimeOrganiser
         }
     }
 }
+
+/*
+ To do:
+fix dispaying of error texts in Settings window
+add windows,
+saving
+ */

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeOrganiser"
         mc:Ignorable="d"
-        Title="SettingsWindow" Height="450" Width="800"
+        Title="Settings" Height="450" Width="800"
         FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -19,24 +19,27 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+        <TextBlock Grid.Column="1" Grid.Row="1"  Text="Settings" FontSize="21" Margin="0, 5"/>
+        
+        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <TextBlock Text="Way of sorting:" FontSize="16"/>
             <StackPanel Orientation="Horizontal" Margin="10,5">
                 <TextBlock Text="Importance * "/>
                 <TextBox x:Name="ImportanceBox" Text="{Binding ImportanceText}" MinWidth="20"
-                         TextChanged="TestFor_TextChanged"/>
+                         TextChanged="ImportanceBox_TextChanged"/>
                 <TextBlock Text=" - Days left * "/>
                 <TextBox x:Name="TimeBox" Text="{Binding TimeText}" MinWidth="20"
-                         TextChanged="TestFor_TextChanged"/>
+                         TextChanged="TimeBox_TextChanged"/>
             </StackPanel>
             <TextBlock Text="{Binding WayErrText, UpdateSourceTrigger=PropertyChanged}" Height="{Binding WayErrHeight, UpdateSourceTrigger=PropertyChanged}" 
                        Visibility="{Binding WayErrVis, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
+        <StackPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
             <TextBlock Text="Separating segment:" FontSize="16"/>
             <StackPanel Orientation="Horizontal" Margin="10,5">
                 <TextBlock Text="Length of separating segment in bar:  "/>
@@ -48,9 +51,9 @@
                        Visibility="{Binding LenErrVis, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         </StackPanel>
 
-        <Button x:Name="ConfirmButt" Grid.Column="1" Grid.Row="3" Content="Confirm" Margin="10" 
+        <Button x:Name="ConfirmButt" Grid.Column="1" Grid.Row="4" Content="Confirm" Margin="10" 
                 FontSize="16" Click="ConfirmButt_Click"/>
-        <Button x:Name="CancelButt" Grid.Column="2" Grid.Row="3" Content="Cancel" Margin="10" 
+        <Button x:Name="CancelButt" Grid.Column="2" Grid.Row="4" Content="Cancel" Margin="10" 
                 FontSize="16" Click="CancelButt_Click"/>
     </Grid>
 </Window>

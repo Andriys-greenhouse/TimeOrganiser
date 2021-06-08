@@ -89,6 +89,7 @@
             <Button x:Name="DeleteAllButt" Content="  Delete all&#xa;solved Tasks" Margin="3"
                     MinWidth="100" Click="DeleteAllButt_Click"/>
             <Button x:Name="SettingsButt" Content="Settings" Margin="3" Click="SettingsButt_Click"/>
+            <Button x:Name="ManualButt" Content="Manual" Margin="3"/>
         </StackPanel>
     </Grid>
 </Window>

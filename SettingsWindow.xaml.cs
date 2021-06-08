@@ -20,7 +20,7 @@ namespace TimeOrganiser
     /// </summary>
     public partial class SettingsWindow : Window, INotifyPropertyChanged
     {
-        public bool AtemptedToSubmit { get; set; } = false;
+        bool AtemptedToSubmit { get; set; } = false;
         public bool IsOk { get; set; } = false;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -67,7 +67,14 @@ namespace TimeOrganiser
             }
         }
 
-        private void TestFor_TextChanged(object sender, TextChangedEventArgs e)
+        private void ImportanceBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WayErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WayErrHeight"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WayErrVis"));
+        }
+
+        private void TimeBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WayErrText"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("WayErrHeight"));
@@ -92,8 +99,8 @@ namespace TimeOrganiser
         {
             get
             {
-                if (WayErrText == "") { return 2; }
-                else { return 15; }
+                if (LenErrText == "") { return 2; }
+                else { return 37; }
             }
         }
 
@@ -101,7 +108,7 @@ namespace TimeOrganiser
         {
             get
             {
-                if (WayErrText == "") { return Visibility.Hidden; }
+                if (LenErrText == "") { return Visibility.Hidden; }
                 else { return Visibility.Visible; }
             }
         }
