@@ -25,6 +25,6 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="Manual" FontSize="21"/>
         <TextBlock x:Name="MainText" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" 
                    Text="{Binding InnerText}"/>
-        <Button x:Name="OkButt" Grid.Column="2" Grid.Row="3" Content="OK"/>
+        <Button x:Name="OkButt" Grid.Column="2" Grid.Row="3" Content="OK" Click="OkButt_Click"/>
     </Grid>
 </Window>

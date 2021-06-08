@@ -24,5 +24,10 @@ namespace TimeOrganiser
         {
             InitializeComponent();
         }
+
+        private void OkButt_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
