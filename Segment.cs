@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace TimeOrganiser
 {
-    class Segment
+    public class Segment
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
-        public int Lenght { get; set; }
-        public double ShowLength { get { return Lenght/4.4; } }
+        public int Duration { get; set; }
+        public double ShowLength { get { return Duration/4.4; } }
         public SolidColorBrush BackgroundColor { get; set; }
         public Segment(string aName, string aDescription, int aLenght, Color aColor)
         {
-            Name = aName;
+            Title = aName;
             Description = aDescription;
-            Lenght = aLenght;
+            Duration = aLenght;
             BackgroundColor = new SolidColorBrush(aColor);
         }
     }

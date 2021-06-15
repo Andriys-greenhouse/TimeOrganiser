@@ -18,14 +18,21 @@ namespace TimeOrganiser
     /// <summary>
     /// Interaction logic for TaskWindow.xaml
     /// </summary>
-    public partial class TaskWindow : Window, INotifyPropertyChanged
+    public partial class SegmentWindow : Window, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public string Headline { get; set; } = "New Task";
+        public string Headline { get; set; } = "New Segment";
         int packedLine = 2;
         int unpackedLine = 18;
         bool AttemptedToSubmit = false;
         public bool HandedIn = false;
+
+        List<SolidColorBrush> MyColors { get; set; } = new List<SolidColorBrush>();
+
+        void InitColors()
+        {
+            MyColors.Add(new SolidColorBrush(Colors.Red));
+        }
 
         //Title line
         public string TitleText { get; set; } = "";
@@ -82,116 +89,50 @@ namespace TimeOrganiser
             }
         }
 
-        //Importance line
-        public string ImpText { get; set; } = "";
-        public int ImpErrHeigth
+        //Duration line
+        public string DurText { get; set; } = "";
+        public int DurErrHeigth
         {
             get
             {
-                if (ImpErrText == "") { return packedLine; }
+                if (DurErrText == "") { return packedLine; }
                 else { return unpackedLine; }
             }
         }
-        public Visibility ImpErrVis
+        public Visibility DurErrVis
         {
             get
             {
-                if (ImpErrText == "") { return Visibility.Hidden; }
+                if (DurErrText == "") { return Visibility.Hidden; }
                 else { return Visibility.Visible; }
             }
         }
-        public string ImpErrText
+        public string DurErrText
         {
             get
             {
-                if (AttemptedToSubmit && (!int.TryParse(ImpText, out int result) || result > 10 || result < 1)) { return "Importance must be an integer between 1 and 10."; }
+                if (AttemptedToSubmit && (!int.TryParse(DurText, out int result) || result > 1439 || result < 10)) { return "Duration must be an integer between 10 and 1439."; }
                 else { return ""; }
             }
         }
 
-        //Deadline line
-        public string YearText { get; set; } = "";
-        public string MonthText { get; set; } = "";
-        public string DayText { get; set; } = "";
-        public string HourText { get; set; } = "";
-        public int DdlErrHeigth
-        {
-            get
-            {
-                if (DdlErrText == "") { return packedLine; }
-                else 
-                { 
-                    return unpackedLine * (DdlErrText == "Deadline Must be from now on." ? 1 : 2); 
-                }
-            }
-        }
-        public Visibility DdlErrVis
-        {
-            get
-            {
-                if (DdlErrText == "") { return Visibility.Hidden; }
-                else { return Visibility.Visible; }
-            }
-        }
-        public string DdlErrText
-        {
-            get
-            {
-                bool hourOk = false;
-                bool withoutHourOk = false;
-                bool isFromNowOn = false;
-                DateTime tester;
-                try
-                {
-                    tester = new DateTime(int.Parse(YearText), int.Parse(MonthText), int.Parse(DayText), int.Parse(HourText), 0, 0);
-                    hourOk = true;
-                    isFromNowOn = tester >= DateTime.Now;
-                } catch (Exception) { }
-
-                try
-                {
-                    if (HourText == "")
-                    {
-                        tester = new DateTime(int.Parse(YearText), int.Parse(MonthText), int.Parse(DayText));
-                        withoutHourOk = true;
-                        isFromNowOn = tester >= DateTime.Now;
-                    }
-                }
-                catch (Exception) { }
-
-                if (!AttemptedToSubmit) { return ""; }
-                else if (!isFromNowOn && (hourOk || withoutHourOk)) { return "Deadline Must be from now on."; }
-                else if (withoutHourOk || hourOk) { return ""; }
-                else if (!hourOk && !withoutHourOk) { return "Invalid format of year, month, day or hour input.\n(hour field can be left blank)"; }
-                else { throw new Exception(); }
-            }
-        }
-
-        public TaskWindow()
+        public SegmentWindow()
         {
             DataContext = this;
 
             InitializeComponent();
         }
-        public TaskWindow(Task ToEdit)
+        public SegmentWindow(Segment ToEdit)
         {
-            Headline = "Task";
+            Headline = "Segment";
             TitleText = ToEdit.Title;
             DescrText = ToEdit.Description;
-            ImpText = ToEdit.Importance.ToString();
-            YearText = ToEdit.Deadline.Year.ToString();
-            MonthText = ToEdit.Deadline.Month.ToString();
-            DayText = ToEdit.Deadline.Day.ToString();
-            if (ToEdit.Deadline.Hour != 0) { HourText = ToEdit.Deadline.Hour.ToString(); }
+            DurText = ToEdit.Duration.ToString();
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Headline"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleText"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("YearText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("MonthText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DayText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("HourText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurText"));
 
             DataContext = this;
 
@@ -212,11 +153,11 @@ namespace TimeOrganiser
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
         }
 
-        private void ImpTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void DurTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrVis"));
         }
 
         private void OneOfDdlTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -236,14 +177,14 @@ namespace TimeOrganiser
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DurErrVis"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
 
-            if (TitleErrText == "" && DescrErrText== "" && ImpErrText == "" && DdlErrText == "")
+            if (TitleErrText == "" && DescrErrText== "" && DurErrText == "")
             {
                 HandedIn = true;
                 Close();

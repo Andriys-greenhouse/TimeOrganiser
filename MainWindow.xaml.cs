@@ -28,6 +28,7 @@ namespace TimeOrganiser
         public double ImportanceFactor { get; set; } = 3;
         public double LengthOfSepSegment { get; set; } = 15;
         TaskWindow CurentTaskWindow;
+        SettingsWindow CurentSettingsWindow;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
@@ -44,7 +45,7 @@ namespace TimeOrganiser
             int lenghtOfFinalSegment = 1440;
             foreach(Segment seg in CurentBar.Content)
             {
-                lenghtOfFinalSegment -= seg.Lenght;
+                lenghtOfFinalSegment -= seg.Duration;
             }
             CurentBar.Content.Add(new Segment("unspecified", "", lenghtOfFinalSegment, Colors.Gray));
 
@@ -88,13 +89,13 @@ namespace TimeOrganiser
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow sett = new SettingsWindow(ImportanceFactor, TimeFactor, LengthOfSepSegment);
-            sett.ShowDialog();
-            if (sett.IsOk)
+            CurentSettingsWindow = new SettingsWindow(ImportanceFactor, TimeFactor, LengthOfSepSegment);
+            CurentSettingsWindow.ShowDialog();
+            if (CurentSettingsWindow.IsOk)
             {
-                ImportanceFactor = double.Parse(sett.ImportanceText);
-                TimeFactor = double.Parse(sett.TimeText);
-                LengthOfSepSegment = double.Parse(sett.LengthText);
+                ImportanceFactor = double.Parse(CurentSettingsWindow.ImportanceText);
+                TimeFactor = double.Parse(CurentSettingsWindow.TimeText);
+                LengthOfSepSegment = double.Parse(CurentSettingsWindow.LengthText);
             }
         }
 
