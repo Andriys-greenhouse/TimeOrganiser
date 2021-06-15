@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeOrganiser
 {
-    class Task
+    public class Task
     {
         public string Title { get; set; } //2-20 char
         public string Description { get; set; } //0-200 char

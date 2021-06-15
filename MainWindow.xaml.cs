@@ -28,6 +28,7 @@ namespace TimeOrganiser
         public double TimeFactor { get; set; } = 1;
         public double ImportanceFactor { get; set; } = 3;
         public double LengthOfSepSegment { get; set; } = 15;
+        TaskWindow CurentTaskWindow;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
@@ -95,6 +96,40 @@ namespace TimeOrganiser
                 ImportanceFactor = double.Parse(sett.ImportanceText);
                 TimeFactor = double.Parse(sett.TimeText);
                 LengthOfSepSegment = double.Parse(sett.LengthText);
+            }
+        }
+
+        private void TaskView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CurentTaskWindow = new TaskWindow(Tasks[TaskView.SelectedIndex]);
+            CurentTaskWindow.ShowDialog();
+            Tasks[TaskView.SelectedIndex].Title = CurentTaskWindow.TitleText;
+            Tasks[TaskView.SelectedIndex].Description = CurentTaskWindow.DescrText;
+            Tasks[TaskView.SelectedIndex].Importance = int.Parse(CurentTaskWindow.ImpText);
+            Tasks[TaskView.SelectedIndex].Deadline = new DateTime
+                (
+                int.Parse(CurentTaskWindow.YearText), 
+                int.Parse(CurentTaskWindow.MonthText),
+                int.Parse(CurentTaskWindow.DayText),
+                CurentTaskWindow.HourText == "" ? 0 : int.Parse(CurentTaskWindow.HourText), 
+                0, 0
+                );
+        }
+
+        private void NewTaskButt_Click(object sender, RoutedEventArgs e)
+        {
+            CurentTaskWindow = new TaskWindow();
+            CurentTaskWindow.ShowDialog();
+            if (CurentTaskWindow.HandedIn)
+            {
+                Tasks.Add(new Task(CurentTaskWindow.TitleText, CurentTaskWindow.DescrText, int.Parse(CurentTaskWindow.ImpText), new DateTime
+                    (
+                        int.Parse(CurentTaskWindow.YearText),
+                        int.Parse(CurentTaskWindow.MonthText),
+                        int.Parse(CurentTaskWindow.DayText),
+                        CurentTaskWindow.HourText == "" ? 0 : int.Parse(CurentTaskWindow.HourText),
+                        0, 0
+                    )));
             }
         }
     }
