@@ -25,9 +25,9 @@ namespace TimeOrganiser
     {
         Bar CurentBar { get; set; } = new Bar(new DateTime(2021, 5, 9, 8, 0, 0), new ObservableCollection<Segment>());
         ObservableCollection<Task> Tasks { get; set; } = new ObservableCollection<Task>();
-        public decimal TimeCoeficient { get; set; } = 1;
-        public decimal ImportanceCoeficient { get; set; } = 3;
-        public decimal LengthOfSepSegment { get; set; } = 15;
+        public double TimeFactor { get; set; } = 1;
+        public double ImportanceFactor { get; set; } = 3;
+        public double LengthOfSepSegment { get; set; } = 15;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
@@ -88,13 +88,13 @@ namespace TimeOrganiser
 
         private void SettingsButt_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow sett = new SettingsWindow(ImportanceCoeficient, TimeCoeficient, LengthOfSepSegment);
+            SettingsWindow sett = new SettingsWindow(ImportanceFactor, TimeFactor, LengthOfSepSegment);
             sett.ShowDialog();
             if (sett.IsOk)
             {
-                ImportanceCoeficient = decimal.Parse(sett.ImportanceText);
-                TimeCoeficient = decimal.Parse(sett.TimeText);
-                LengthOfSepSegment = decimal.Parse(sett.LengthText);
+                ImportanceFactor = double.Parse(sett.ImportanceText);
+                TimeFactor = double.Parse(sett.TimeText);
+                LengthOfSepSegment = double.Parse(sett.LengthText);
             }
         }
     }

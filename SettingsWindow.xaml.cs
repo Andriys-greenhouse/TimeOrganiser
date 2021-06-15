@@ -22,9 +22,12 @@ namespace TimeOrganiser
     {
         bool AtemptedToSubmit { get; set; } = false;
         public bool IsOk { get; set; } = false;
+        int packedLine = 2;
+        int unpackedLine = 16;
+        int extraUnpackedLine = 37;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public SettingsWindow(decimal CurentImportanceCoeficient, decimal CurentTimeCoeficient, decimal CurentLengthOfSepSegment)
+        public SettingsWindow(double CurentImportanceCoeficient, double CurentTimeCoeficient, double CurentLengthOfSepSegment)
         {
             InitializeComponent();
             ImportanceText = CurentImportanceCoeficient.ToString();
@@ -42,9 +45,9 @@ namespace TimeOrganiser
         {
             get
             {
-                if ( AtemptedToSubmit && (!decimal.TryParse(ImportanceText, out decimal result1) || !(result1 >= 0 && result1 <= 99) ||
-                    !decimal.TryParse(TimeText, out decimal result2) || !(result2 >= 0 && result2 <= 99)) )
-                { return "Coeficient must be number between 0 and 99"; }
+                if ( AtemptedToSubmit && (!double.TryParse(ImportanceText, out double result1) || !(result1 >= 0 && result1 <= 99) ||
+                    !double.TryParse(TimeText, out double result2) || !(result2 >= 0 && result2 <= 99)) )
+                { return "Coeficient must be number between 0 and 99."; }
                 else { return ""; }
             }
         }
@@ -53,8 +56,8 @@ namespace TimeOrganiser
         {
             get
             {
-                if (WayErrText == "") { return 2; }
-                else { return 15; }
+                if (WayErrText == "") { return packedLine; }
+                else { return unpackedLine; }
             }
         }
 
@@ -89,7 +92,7 @@ namespace TimeOrganiser
         {
             get
             {
-                if (AtemptedToSubmit && (!decimal.TryParse(LengthText, out decimal result) || !(result == 0 || (result >= 10 && result <= 30))))
+                if (AtemptedToSubmit && (!double.TryParse(LengthText, out double result) || !(result == 0 || (result >= 10 && result <= 30))))
                 { return "Separating segment must be either 0 (for non)\nor between 10 and 30 minutes long."; }
                 else { return ""; }
             }
@@ -99,8 +102,8 @@ namespace TimeOrganiser
         {
             get
             {
-                if (LenErrText == "") { return 2; }
-                else { return 37; }
+                if (LenErrText == "") { return packedLine; }
+                else { return extraUnpackedLine; }
             }
         }
 

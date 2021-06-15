@@ -19,7 +19,17 @@ namespace TimeOrganiser
     /// </summary>
     public partial class ManualWindow : Window
     {
-        public string InnerText { get; set; } = "";
+        public string AboutDescription { get; set; } = 
+            "This application is designed to help you to schedule your time and to track your tasks. " +
+            "Time planning is done by breaking your time to segments (like: breakfast, school, prayer time,...) which user arranges to order he likes." +
+            "Tasks are evaluated and ordered by criteria given by the user.";
+        public string MainWindowDescription { get; set; } = "Main window is like a hub from which user is able to access all features." +
+            "by double clicking";
+        public string NewBarWindowDescription { get; set; } = "";
+        public string SettingsWindowDescription { get; set; } = "";
+        public string TaskWindowDescription { get; set; } = "";
+        public string SegmentWindowDescription { get; set; } = "";
+
         public ManualWindow()
         {
             InitializeComponent();
