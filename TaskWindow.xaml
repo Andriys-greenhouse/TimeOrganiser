@@ -26,7 +26,7 @@
         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Vertical" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Title: " FontSize="16"/>
-                <TextBox x:Name="TitleTextBox" Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged"
+                <TextBox x:Name="TitleTextBox" Text="{Binding TitleText, UpdateSourceTrigger=PropertyChanged}" TextChanged="TitleTextBox_TextChanged"
                          Width="150" Margin="50,0,0,0"/>
             </StackPanel>
             <TextBlock x:Name="TitleErr" Visibility="{Binding TitleErrVis, UpdateSourceTrigger=PropertyChanged}" 
@@ -35,7 +35,7 @@
             
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Description: " FontSize="16"/>
-                <TextBox x:Name="DescrTextBox" Text="{Binding DescrText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged"
+                <TextBox x:Name="DescrTextBox" Text="{Binding DescrText, UpdateSourceTrigger=PropertyChanged}" TextChanged="DescrTextBox_TextChanged"
                          Width="150" Height="50"/>
             </StackPanel>
             <TextBlock x:Name="DescrErr" Visibility="{Binding DescrErrVis, UpdateSourceTrigger=PropertyChanged}" 
@@ -44,7 +44,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Importance: " FontSize="16"/>
-                <TextBox x:Name="ImpTextBox" Text="{Binding ImpText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged"
+                <TextBox x:Name="ImpTextBox" Text="{Binding ImpText, UpdateSourceTrigger=PropertyChanged}" TextChanged="ImpTextBox_TextChanged"
                          Width="150"/>
             </StackPanel>
             <TextBlock x:Name="ImpErr" Visibility="{Binding ImpErrVis, UpdateSourceTrigger=PropertyChanged}" 
@@ -54,13 +54,13 @@
             <TextBlock Text="Deadline:" FontSize="16"/>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Year:" Margin="10,0,5,0"/>
-                <TextBox x:Name="YearTextBox" Text="{Binding YearText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged" Width="40"/>
+                <TextBox x:Name="YearTextBox" Text="{Binding YearText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfDdlTextBox_TextChanged" Width="40"/>
                 <TextBlock Text="Month:" Margin="10,0,5,0"/>
-                <TextBox x:Name="MonthTextBox" Text="{Binding MonthText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged" Width="20"/>
+                <TextBox x:Name="MonthTextBox" Text="{Binding MonthText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfDdlTextBox_TextChanged" Width="20"/>
                 <TextBlock Text="Day:" Margin="10,0,5,0"/>
-                <TextBox x:Name="DayTextBox" Text="{Binding DayText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged" Width="20"/>
+                <TextBox x:Name="DayTextBox" Text="{Binding DayText, UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfDdlTextBox_TextChanged" Width="20"/>
                 <TextBlock Text="(Hour):" Margin="10,0,5,0"/>
-                <TextBox x:Name="HourTextBox" Text="{Binding HourText,UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfTextBox_TextChanged" Width="20"/>
+                <TextBox x:Name="HourTextBox" Text="{Binding HourText,UpdateSourceTrigger=PropertyChanged}" TextChanged="OneOfDdlTextBox_TextChanged" Width="20"/>
             </StackPanel>
             <TextBlock x:Name="DdlErr" Visibility="{Binding DdlErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding DdlErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"

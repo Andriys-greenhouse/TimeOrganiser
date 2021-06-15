@@ -26,7 +26,6 @@ namespace TimeOrganiser
         int unpackedLine = 16;
         bool AttemptedToSubmit = false;
         public bool HandedIn = false;
-        bool Editing = false;
 
         //Title line
         public string TitleText { get; set; } = "";
@@ -50,7 +49,7 @@ namespace TimeOrganiser
         {
             get
             {
-                if (AttemptedToSubmit && TitleText.Length < 2) { return "Title must have at least 2 characteers."; }
+                if (AttemptedToSubmit && TitleText.Length < 2) { return "Title must have at least 2 characters."; }
                 if (AttemptedToSubmit && TitleText.Length > 20) { return "Title must have at most 20 characters."; }
                 else { return ""; }
             }
@@ -120,7 +119,10 @@ namespace TimeOrganiser
             get
             {
                 if (DdlErrText == "") { return packedLine; }
-                else { return unpackedLine * 3; }
+                else 
+                { 
+                    return unpackedLine * (DdlErrText == "Deadline Must be from now on." ? 1 : 2); 
+                }
             }
         }
         public Visibility DdlErrVis
@@ -135,11 +137,33 @@ namespace TimeOrganiser
         {
             get
             {
-                if (AttemptedToSubmit && !((int.TryParse(YearText, out int a) && int.TryParse(MonthText, out int b) && 
-                    int.TryParse(DayText, out int c) && int.TryParse(HourText, out int d) && new DateTime(a, b, c, d, 0, 0) >= DateTime.Now) ||
-                    (HourText == "" && DateTime.TryParse(YearText + "-" + MonthText + "-" + DayText, out DateTime result) && result >= DateTime.Now)))
-                { return "Invalid format of year, month, day or hour input.\n(hour can be left blank)\n(date must be from now on)"; }
-                else { return ""; }
+                bool hourOk = false;
+                bool withoutHourOk = false;
+                bool isFromNowOn = false;
+                DateTime tester;
+                try
+                {
+                    tester = new DateTime(int.Parse(YearText), int.Parse(MonthText), int.Parse(DayText), int.Parse(HourText), 0, 0);
+                    hourOk = true;
+                    isFromNowOn = tester >= DateTime.Now;
+                } catch (Exception) { }
+
+                try
+                {
+                    if (HourText == "")
+                    {
+                        tester = new DateTime(int.Parse(YearText), int.Parse(MonthText), int.Parse(DayText));
+                        withoutHourOk = true;
+                        isFromNowOn = tester >= DateTime.Now;
+                    }
+                }
+                catch (Exception) { }
+
+                if (!AttemptedToSubmit) { return ""; }
+                else if (!isFromNowOn && (hourOk || withoutHourOk)) { return "Deadline Must be from now on."; }
+                else if (withoutHourOk || hourOk) { return ""; }
+                else if (!hourOk && !withoutHourOk) { return "Invalid format of year, month, day or hour input.\n(hour field can be left blank)"; }
+                else { throw new Exception(); }
             }
         }
 
@@ -152,7 +176,6 @@ namespace TimeOrganiser
         public TaskWindow(Task ToEdit)
         {
             Headline = "Task";
-            Editing = true;
             TitleText = ToEdit.Title;
             DescrText = ToEdit.Description;
             ImpText = ToEdit.Importance.ToString();
@@ -175,52 +198,83 @@ namespace TimeOrganiser
             InitializeComponent();
         }
 
-        bool ContainsErrors()
+        bool TitleOk()
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrHeigth"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrVis"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
 
-            if(TitleErrText == "" && DescrErrText == "" && ImpErrText == "" && DdlErrText == "") { return false; }
-            else { return true; }
+            return TitleErrText == "";
         }
 
-        private void OneOfTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        bool DescrOk()
         {
-            ContainsErrors();
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
+
+            return DescrErrText == "";
+        }
+
+        bool ImpOk()
+        {
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
+
+            return ImpText == "";
+        }
+
+        bool DdlOk()
+        {
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
+            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
+
+            return DdlErrText == "";
+        }
+
+        private void TitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TitleOk();
+        }
+
+        private void DescrTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DescrOk();
+        }
+
+        private void ImpTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ImpOk();
+        }
+
+        private void OneOfDdlTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DdlOk();
         }
 
         private void ConfirmButt_Click(object sender, RoutedEventArgs e)
         {
             AttemptedToSubmit = true;
-            if(ContainsErrors()) { MessageBox.Show("Some fields contain invalid values."); }
-            else
+            //if (TitleOk() && DescrOk() && ImpOk() && DdlOk())
+            TitleOk();
+            DescrOk();
+            ImpOk();
+            DdlOk();
+            if (TitleErrText == "" && DescrErrText== "" && ImpErrText == "" && DdlErrText == "")
             {
                 HandedIn = true;
                 Close();
             }
+            else { MessageBox.Show("Some fields contain invalid values."); }
         }
 
         private void CancelButt_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            if (!Editing) { base.OnClosed(e); }
-            else { MessageBox.Show("Editation of existing Task can't be canceled."); }
         }
     }
 }

@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace TimeOrganiser
 {
@@ -103,17 +102,20 @@ namespace TimeOrganiser
         {
             CurentTaskWindow = new TaskWindow(Tasks[TaskView.SelectedIndex]);
             CurentTaskWindow.ShowDialog();
-            Tasks[TaskView.SelectedIndex].Title = CurentTaskWindow.TitleText;
-            Tasks[TaskView.SelectedIndex].Description = CurentTaskWindow.DescrText;
-            Tasks[TaskView.SelectedIndex].Importance = int.Parse(CurentTaskWindow.ImpText);
-            Tasks[TaskView.SelectedIndex].Deadline = new DateTime
-                (
-                int.Parse(CurentTaskWindow.YearText), 
-                int.Parse(CurentTaskWindow.MonthText),
-                int.Parse(CurentTaskWindow.DayText),
-                CurentTaskWindow.HourText == "" ? 0 : int.Parse(CurentTaskWindow.HourText), 
-                0, 0
-                );
+            if (CurentTaskWindow.HandedIn)
+            {
+                Tasks[TaskView.SelectedIndex].Title = CurentTaskWindow.TitleText;
+                Tasks[TaskView.SelectedIndex].Description = CurentTaskWindow.DescrText;
+                Tasks[TaskView.SelectedIndex].Importance = int.Parse(CurentTaskWindow.ImpText);
+                Tasks[TaskView.SelectedIndex].Deadline = new DateTime
+                    (
+                    int.Parse(CurentTaskWindow.YearText),
+                    int.Parse(CurentTaskWindow.MonthText),
+                    int.Parse(CurentTaskWindow.DayText),
+                    CurentTaskWindow.HourText == "" ? 0 : int.Parse(CurentTaskWindow.HourText),
+                    0, 0
+                    );
+            }
         }
 
         private void NewTaskButt_Click(object sender, RoutedEventArgs e)
