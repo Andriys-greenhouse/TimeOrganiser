@@ -23,7 +23,7 @@ namespace TimeOrganiser
         public event PropertyChangedEventHandler PropertyChanged;
         public string Headline { get; set; } = "New Task";
         int packedLine = 2;
-        int unpackedLine = 16;
+        int unpackedLine = 18;
         bool AttemptedToSubmit = false;
         public bool HandedIn = false;
 
@@ -198,72 +198,51 @@ namespace TimeOrganiser
             InitializeComponent();
         }
 
-        bool TitleOk()
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrText"));
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrHeigth"));
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrVis"));
-
-            return TitleErrText == "";
-        }
-
-        bool DescrOk()
-        {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
-
-            return DescrErrText == "";
-        }
-
-        bool ImpOk()
-        {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
-
-            return ImpText == "";
-        }
-
-        bool DdlOk()
-        {
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
-            PropertyChanged.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
-
-            return DdlErrText == "";
-        }
-
         private void TitleTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            TitleOk();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrVis"));
         }
 
         private void DescrTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DescrOk();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
         }
 
         private void ImpTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            ImpOk();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
         }
 
         private void OneOfDdlTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            DdlOk();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
         }
 
         private void ConfirmButt_Click(object sender, RoutedEventArgs e)
         {
             AttemptedToSubmit = true;
-            //if (TitleOk() && DescrOk() && ImpOk() && DdlOk())
-            TitleOk();
-            DescrOk();
-            ImpOk();
-            DdlOk();
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("TitleErrVis"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DescrErrVis"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("ImpErrVis"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrText"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrTextHeigth"));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("DdlErrVis"));
+
             if (TitleErrText == "" && DescrErrText== "" && ImpErrText == "" && DdlErrText == "")
             {
                 HandedIn = true;
