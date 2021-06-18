@@ -59,11 +59,11 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal" Grid.ColumnSpan="2">
-            <TextBlock Text="Color:" FontSize="16"/>
-            <ListBox x:Name="ColorPick" ItemsSource="Colors">
+            <TextBlock Text="Color:" FontSize="16" Margin="0, 0, 50, 0"/>
+            <ListBox x:Name="ColorPick" ItemsSource="{Binding .}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding }"/>
+                        <TextBlock Text="{Binding Word}"/>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
