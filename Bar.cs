@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TimeOrganiser
 {
-    class Bar
+    public class Bar
     {
         public DateTime Begening { get; set; }
         public ObservableCollection<Segment> Content { get; set; }

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TimeOrganiser"
         mc:Ignorable="d"
-        Title="NewBarWindow" Height="450" Width="800">
+        Title="NewBarWindow" Height="450" Width="800"
+        FontSize="14">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -20,7 +21,40 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="New Bar" FontSize="21"/>
+        <ListView x:Name="ExistingSegmentsViev" Grid.Column="1" Grid.Row="2" Grid.RowSpan="5" ItemsSource="{Binding .}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Background="{Binding Color}">
+                        <TextBlock Text="{Binding Title}"/>
+                        <TextBlock Text="{Binding Duration}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView x:Name="InsideSegmentsViev" Grid.Column="3" Grid.Row="2" Grid.RowSpan="4" ItemsSource="{Binding .}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Background="{Binding Color}">
+                        <TextBlock Text="{Binding Title}"/>
+                        <TextBlock Text="{Binding Duration}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button x:Name="RightButt" Grid.Column="2" Grid.Row="1" Content="-&gt;"/>
+        <Button x:Name="LeftButt" Grid.Column="2" Grid.Row="2" Content="&lt;-"/>
+        <Button x:Name="AddButt" Grid.Column="2" Grid.Row="3" Content="Add"/>
+        <Button x:Name="DelButt" Grid.Column="2" Grid.Row="4" Content="Del"/>
+        
+
     </Grid>
 </Window>
