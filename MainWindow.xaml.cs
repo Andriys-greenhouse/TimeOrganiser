@@ -25,9 +25,10 @@ namespace TimeOrganiser
     {
         Bar CurentBar { get; set; } = new Bar(new DateTime(2021, 5, 9, 8, 0, 0), new ObservableCollection<Segment>());
         ObservableCollection<Task> Tasks { get; set; } = new ObservableCollection<Task>();
-        public double TimeFactor { get; set; } = 1;
-        public double ImportanceFactor { get; set; } = 3;
-        public double LengthOfSepSegment { get; set; } = 15;
+        ObservableCollection<Segment> Segments { get; set; } = new ObservableCollection<Segment>();
+        public int TimeFactor { get; set; } = 1;
+        public int ImportanceFactor { get; set; } = 3;
+        public int LengthOfSepSegment { get; set; } = 15;
         TaskWindow CurentTaskWindow;
         SettingsWindow CurentSettingsWindow;
         NewBarWindow CurentNewBarWindow;
@@ -38,6 +39,7 @@ namespace TimeOrganiser
         {
             InitializeComponent();
 
+            //TRAINING EXAMPLES OR INFILL BEFORE USER WILL INPUT DATA
             CurentBar.Content.Add(new Segment("sub 1", "", 50, "Red", Colors.Red));
             CurentBar.Content.Add(new Segment("sub 2", "", 200, "Green", Colors.Green));
             CurentBar.Content.Add(new Segment("sub 3", "", 300, "Blue", Colors.Blue));
@@ -59,6 +61,8 @@ namespace TimeOrganiser
             RealBar.DataContext = CurentBar;
             DetailBar.DataContext = CurentBar;
             TaskView.DataContext = Tasks;
+
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
 
             ColorWithName.InitColors();
         }
@@ -85,6 +89,9 @@ namespace TimeOrganiser
                     return;
 
             }
+
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
         }
 
         private void Bar_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -98,10 +105,13 @@ namespace TimeOrganiser
             CurentSettingsWindow.ShowDialog();
             if (CurentSettingsWindow.IsOk)
             {
-                ImportanceFactor = double.Parse(CurentSettingsWindow.ImportanceText);
-                TimeFactor = double.Parse(CurentSettingsWindow.TimeText);
-                LengthOfSepSegment = double.Parse(CurentSettingsWindow.LengthText);
+                ImportanceFactor = int.Parse(CurentSettingsWindow.ImportanceText);
+                TimeFactor = int.Parse(CurentSettingsWindow.TimeText);
+                LengthOfSepSegment = int.Parse(CurentSettingsWindow.LengthText);
             }
+
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
         }
 
         private void TaskView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -122,6 +132,9 @@ namespace TimeOrganiser
                     0, 0
                     );
             }
+
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
         }
 
         private void NewTaskButt_Click(object sender, RoutedEventArgs e)
@@ -139,11 +152,30 @@ namespace TimeOrganiser
                         0, 0
                     )));
             }
+
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
         }
 
         private void NewBarButt_Click(object sender, RoutedEventArgs e)
         {
+            CurentNewBarWindow = new NewBarWindow(Segments, LengthOfSepSegment);
+            CurentNewBarWindow.ShowDialog();
+            if (CurentNewBarWindow.HandedIn)
+            {
+                CurentBar.Begening = CurentNewBarWindow.ThisBar.Begening;
+                CurentBar.Content = CurentNewBarWindow.ThisBar.Content;
 
+                int lenghtOfFinalSegment = 1440;
+                foreach (Segment seg in CurentBar.Content)
+                {
+                    lenghtOfFinalSegment -= seg.Duration;
+                }
+                CurentBar.Content.Add(new Segment("unspecified", "", lenghtOfFinalSegment, "Gray", Colors.Gray));
+            }
+
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
         }
 
         private void ManualButt_Click(object sender, RoutedEventArgs e)
@@ -566,9 +598,23 @@ namespace TimeOrganiser
                 "n5toUVlbZhTMYwGYX8qEZhi0GNOIfekLutEw6yi99RGg9pp7LZZjBZSOiq9s7dsNNuJbE2eUNiUing8N6R3clw0m5WSICScz4UymFyNhC1TK8suqfblzfz6wsJNS6RjnyNDCk5VaWyPiFMfXyvqWtujfwXuv0tzv3tgD" +
                 "OnzyWK9TjVECDKraO4ftu3KTcv8H0EoV7cEVa7g7t6iil4GJqFafNvBgTPdAx9v39RxiIjb6PruNecjEyitqIcjKtFdoKTyfIBopmAQj8DCwPA5VH8898jjZqyIayTPMKD3KP0sjFikmzWLZGePr4dh82KFnXPgoCbfmTqfbzhETYXnZL1rVV0FzVeyJqigIp9";
             
-            try { aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key); }
+            try 
+            {
+                List<Task> tasks = new List<Task>();
+                aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
+                tasks = aTasks.ToList();
+                tasks.Sort((x, y) => y.ValueToCompare(aImportanceFactor, aTimeFactor).CompareTo(x.ValueToCompare(aImportanceFactor, aTimeFactor)));
+                aTasks = new ObservableCollection<Task>(tasks);
+            }
             catch (ArgumentException e) { MessageBox.Show(e.Message); }
-            finally { aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key); }
+            finally 
+            {
+                List<Task> tasks = new List<Task>();
+                aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
+                tasks = aTasks.ToList();
+                tasks.Sort((x, y) => y.ValueToCompare(aImportanceFactor, aTimeFactor).CompareTo(x.ValueToCompare(aImportanceFactor, aTimeFactor)));
+                aTasks = new ObservableCollection<Task>(tasks);
+            }
 
             try { aSegments = LoadSegments("Segments-TimeOrganiser.txt", separator, key); }
             catch (ArgumentException e) { MessageBox.Show(e.Message); }

@@ -29,5 +29,10 @@ namespace TimeOrganiser
             Importance = aImportance;
             Deadline = aDeadline;
         }
+
+        public int ValueToCompare(int aImportanceFactor, int aTimeFactor)
+        {
+            return Importance * aImportanceFactor - (Deadline - DateTime.Now).Days * aTimeFactor; 
+        }
     }
 }
