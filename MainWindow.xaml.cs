@@ -30,6 +30,8 @@ namespace TimeOrganiser
         public double LengthOfSepSegment { get; set; } = 15;
         TaskWindow CurentTaskWindow;
         SettingsWindow CurentSettingsWindow;
+        NewBarWindow CurentNewBarWindow;
+        ManualWindow CurentManualWindow = new ManualWindow();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
@@ -138,6 +140,22 @@ namespace TimeOrganiser
                     )));
             }
         }
+
+        private void NewBarButt_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ManualButt_Click(object sender, RoutedEventArgs e)
+        {
+            CurentManualWindow.ShowDialog();
+        }
+
+
+
+
+
+
 
 
 

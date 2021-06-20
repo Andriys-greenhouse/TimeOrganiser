@@ -86,11 +86,11 @@
 
         <StackPanel Grid.Column="3" Grid.Row="3" Margin="10,10,0,0">
             <Button x:Name="NewTaskButt" Content="New Task" Margin="3" Click="NewTaskButt_Click"/>
-            <Button x:Name="NewBarButt" Content="New Bar" Margin="3"/>
+            <Button x:Name="NewBarButt" Content="New Bar" Margin="3" Click="NewBarButt_Click"/>
             <Button x:Name="DeleteAllButt" Content="  Delete all&#xa;solved Tasks" Margin="3"
                     MinWidth="100" Click="DeleteAllButt_Click"/>
             <Button x:Name="SettingsButt" Content="Settings" Margin="3" Click="SettingsButt_Click"/>
-            <Button x:Name="ManualButt" Content="Manual" Margin="3"/>
+            <Button x:Name="ManualButt" Content="Manual" Margin="3" Click="ManualButt_Click"/>
         </StackPanel>
     </Grid>
 </Window>
