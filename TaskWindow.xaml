@@ -34,7 +34,7 @@
             </StackPanel>
             <TextBlock x:Name="TitleErr" Visibility="{Binding TitleErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding TitleErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"
-                       Height="{Binding TitleErrHeigth, UpdateSourceTrigger=PropertyChanged}"/>
+                       Height="18"/>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Vertical" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal">
@@ -44,7 +44,7 @@
             </StackPanel>
             <TextBlock x:Name="DescrErr" Visibility="{Binding DescrErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding DescrErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"
-                       Height="{Binding DescrErrHeigth, UpdateSourceTrigger=PropertyChanged}"/>
+                       Height="18"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Vertical" Grid.ColumnSpan="2">
@@ -55,7 +55,7 @@
             </StackPanel>
             <TextBlock x:Name="ImpErr" Visibility="{Binding ImpErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding ImpErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"
-                       Height="{Binding ImpErrHeigth, UpdateSourceTrigger=PropertyChanged}"/>
+                       Height="18"/>
         </StackPanel>
 
         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Vertical" Grid.ColumnSpan="2">
@@ -73,7 +73,7 @@
             </StackPanel>
             <TextBlock x:Name="DdlErr" Visibility="{Binding DdlErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding DdlErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"
-                       Height="{Binding DdlErrHeigth, UpdateSourceTrigger=PropertyChanged}"/>
+                       Height="18"/>
         </StackPanel>
 
         <Button x:Name="ConfirmButt" Content="Add/Change" Grid.Column="1" Grid.Row="6" Margin="10" Click="ConfirmButt_Click"/>

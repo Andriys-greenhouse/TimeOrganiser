@@ -35,7 +35,7 @@
                 <TextBox x:Name="TimeBox" Text="{Binding TimeText}" MinWidth="20"
                          TextChanged="TimeBox_TextChanged"/>
             </StackPanel>
-            <TextBlock Text="{Binding WayErrText, UpdateSourceTrigger=PropertyChanged}" Height="{Binding WayErrHeight, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Text="{Binding WayErrText, UpdateSourceTrigger=PropertyChanged}" Height="18" 
                        Visibility="{Binding WayErrVis, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         </StackPanel>
 
@@ -47,7 +47,7 @@
                          TextChanged="LengthBox_TextChanged"/>
                 <TextBlock Text=" minutes"/>
             </StackPanel>
-            <TextBlock Text="{Binding LenErrText, UpdateSourceTrigger=PropertyChanged}" Height="{Binding LenErrHeight, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBlock Text="{Binding LenErrText, UpdateSourceTrigger=PropertyChanged}" Height="18" 
                        Visibility="{Binding LenErrVis, UpdateSourceTrigger=PropertyChanged}" Foreground="Red"/>
         </StackPanel>
 

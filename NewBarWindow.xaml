@@ -71,7 +71,7 @@
             </StackPanel>
             <TextBlock x:Name="StartErr" Visibility="{Binding StartErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding StartErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"
-                       Height="{Binding StartErrHeigth, UpdateSourceTrigger=PropertyChanged}"/>
+                       Height="18"/>
         </StackPanel>
 
         <Button x:Name="CreateButt" Grid.Column="3" Grid.Row="7" Content="Create" 
