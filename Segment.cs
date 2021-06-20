@@ -14,6 +14,7 @@ namespace TimeOrganiser
         public int Duration { get; set; }
         public double ShowLength { get { return Duration/4.4; } }
         public ColorWithName BackgroundColor { get; set; }
+        public SolidColorBrush ShowColor { get { return BackgroundColor.Color; } }
         public Segment(string aName, string aDescription, int aLenght, string aColorWord, Color aColor)
         {
             Title = aName;

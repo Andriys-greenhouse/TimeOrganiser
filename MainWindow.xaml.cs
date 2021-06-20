@@ -39,30 +39,34 @@ namespace TimeOrganiser
         {
             InitializeComponent();
 
-            //TRAINING EXAMPLES OR INFILL BEFORE USER WILL INPUT DATA
-            CurentBar.Content.Add(new Segment("sub 1", "", 50, "Red", Colors.Red));
-            CurentBar.Content.Add(new Segment("sub 2", "", 200, "Green", Colors.Green));
-            CurentBar.Content.Add(new Segment("sub 3", "", 300, "Blue", Colors.Blue));
-            CurentBar.Content.Add(new Segment("sub 4", "", 400, "Brown", Colors.Brown));
-            CurentBar.Content.Add(new Segment("sub 5", "", 10, "Yellow", Colors.Yellow));
+            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
 
-            //put this at end of created bar
-            int lenghtOfFinalSegment = 1440;
-            foreach(Segment seg in CurentBar.Content)
+            if (CurentBar.Content.Count == 0)
             {
-                lenghtOfFinalSegment -= seg.Duration;
-            }
-            CurentBar.Content.Add(new Segment("unspecified", "", lenghtOfFinalSegment, "Gray", Colors.Gray));
+                CurentBar.Content.Add(new Segment("exmp 1", "", 50, "Red", Colors.Red));
+                CurentBar.Content.Add(new Segment("exmp 2", "", 200, "Green", Colors.Green));
+                CurentBar.Content.Add(new Segment("exmp 3", "", 300, "Blue", Colors.Blue));
+                CurentBar.Content.Add(new Segment("exmp 4", "", 400, "Brown", Colors.Brown));
+                CurentBar.Content.Add(new Segment("exmp 5", "", 10, "Yellow", Colors.Yellow));
 
-            Tasks.Add(new Task("Hello", "", 5, new DateTime(2021, 5, 10)));
-            Tasks.Add(new Task("World", "", 7, new DateTime(2021, 6, 10, 12, 0, 0)));
-            Tasks.Add(new Task("Kvarteto", "udělat obrázky", 8, new DateTime(2021, 5, 31)));
+                //put this at end of created bar
+                int lenghtOfFinalSegment = 1440;
+                foreach (Segment seg in CurentBar.Content)
+                {
+                    lenghtOfFinalSegment -= seg.Duration;
+                }
+                CurentBar.Content.Add(new Segment("unspecified", "", lenghtOfFinalSegment, "Gray", Colors.Gray));
+            }
+
+            if (Tasks.Count == 0)
+            {
+                Tasks.Add(new Task("Hello", "", 5, new DateTime(2021, 5, 10)));
+                Tasks.Add(new Task("World", "", 7, new DateTime(2021, 6, 10, 12, 0, 0)));
+            }
 
             RealBar.DataContext = CurentBar;
             DetailBar.DataContext = CurentBar;
             TaskView.DataContext = Tasks;
-
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
 
             ColorWithName.InitColors();
         }
@@ -248,7 +252,7 @@ namespace TimeOrganiser
         {
             if (!File.Exists(aFilename))
             {
-                File.Create(aFilename);
+                using (StreamWriter sr = new StreamWriter(aFilename)) { }
                 throw new ArgumentException("Tasks file not found in the same folder.\n(so I created new one)");
             }
             List<int> faulty = new List<int>();
@@ -341,7 +345,7 @@ namespace TimeOrganiser
         {
             if (!File.Exists(aFilename))
             {
-                File.Create(aFilename);
+                using (StreamWriter sr = new StreamWriter(aFilename)) { }
                 throw new ArgumentException("Segments file not found in the same folder.\n(so I created new one)");
             }
             List<int> faulty = new List<int>();
@@ -399,7 +403,7 @@ namespace TimeOrganiser
         public static void SaveSettings(string aPath, int aImportanceFactor, int aTimeFactor,int aLenOfSepSeg, char aSeparator, string aKey)
         {
             string line = "";
-            StringBuilder sb = new StringBuilder(line); //it is faster than commutation of strings
+            StringBuilder sb = new StringBuilder(line);
             string listOfLines = "";
 
             sb.Append(aSeparator.ToString());
@@ -423,7 +427,7 @@ namespace TimeOrganiser
         {
             if (!File.Exists(aFilename))
             {
-                File.Create(aFilename);
+                using (StreamWriter sr = new StreamWriter(aFilename)) { }
                 throw new ArgumentException("Settings file not found in the same folder.\n(so I created new one)");
             }
             List<int> faulty = new List<int>();
@@ -455,9 +459,9 @@ namespace TimeOrganiser
             int[] final = new int[3];
             if (afterCheck != "")
             {
-                final[0] = int.Parse(afterCheck.Split(aSeparator)[0]);
-                final[1] = int.Parse(afterCheck.Split(aSeparator)[1]);
-                final[3] = int.Parse(afterCheck.Split(aSeparator)[3]);
+                final[0] = int.Parse(afterCheck.Substring(1).Split(aSeparator)[0]);
+                final[1] = int.Parse(afterCheck.Substring(1).Split(aSeparator)[1]);
+                final[2] = int.Parse(afterCheck.Substring(1).Split(aSeparator)[2]);
             }
 
             if (faulty.Count != 0)
@@ -513,38 +517,40 @@ namespace TimeOrganiser
         {
             if (!File.Exists(aFilename))
             {
-                File.Create(aFilename);
+                using (StreamWriter sr = new StreamWriter(aFilename)) { }
                 throw new ArgumentException("Bar file not found in the same folder.\n(so I created new one)");
             }
             List<int> faulty = new List<int>();
             List<string> lines;
             string afterCheck = "";
-            DateTime start;
+            DateTime start = new DateTime();
             using (StreamReader sr = File.OpenText(aFilename))//from https://docs.microsoft.com/cs-cz/dotnet/api/system.io.file.createtext?view=net-5.0
             {
                 lines = Crypt(sr.ReadToEnd(), aKey).Split('\n').ToList();
                 lines.RemoveAll(something => something == "");
-
-                if (!DateTime.TryParseExact(lines[0], "yyyy-MM-dd-HH-mm-ss",System.Globalization.CultureInfo.InvariantCulture, 
-                    System.Globalization.DateTimeStyles.None, out start)) { throw new ArgumentException("In Bar file I found no valid Bar, creating a default one."); }
-                else { lines.RemoveAt(0); }
-                for (int i = 0; i < lines.Count; i++)
+                if (lines.Count != 0)
                 {
-                    if (lines[i].Count(something => something == aSeparator) != 4) { faulty.Add(i); }
-                    else
+                    if (!DateTime.TryParseExact(lines[0], "yyyy-MM-dd-HH-mm-ss", System.Globalization.CultureInfo.InvariantCulture,
+                        System.Globalization.DateTimeStyles.None, out start)) { throw new ArgumentException("In Bar file I found no valid Bar, creating a default one."); }
+                    else { lines.RemoveAt(0); }
+                    for (int i = 0; i < lines.Count; i++)
                     {
-                        string[] insides = lines[i].Substring(1).Split(aSeparator);
-                        if (insides[0].Length < 2 || insides[0].Length > 20 ||
-                            insides[1].Length > 400 ||
-                            !int.TryParse(insides[2], out int value) || value < 10 || value > 1440 ||
-                            !ColorWithName.ColorsDic.ContainsKey(insides[3]))
-                        { faulty.Add(i); }
+                        if (lines[i].Count(something => something == aSeparator) != 4) { faulty.Add(i); }
+                        else
+                        {
+                            string[] insides = lines[i].Substring(1).Split(aSeparator);
+                            if (insides[0].Length < 2 || insides[0].Length > 20 ||
+                                insides[1].Length > 400 ||
+                                !int.TryParse(insides[2], out int value) || value < 10 || value > 1440 ||
+                                !ColorWithName.ColorsDic.ContainsKey(insides[3]))
+                            { faulty.Add(i); }
+                        }
                     }
-                }
-                for (int i = 0; i < lines.Count; i++)
-                {
-                    if (!faulty.Any(item => item == i))
-                    { afterCheck += (i != lines.Count - 1) ? $"{lines[i]}\n" : lines[i].ToString(); }
+                    for (int i = 0; i < lines.Count; i++)
+                    {
+                        if (!faulty.Any(item => item == i))
+                        { afterCheck += (i != lines.Count - 1) ? $"{lines[i]}\n" : lines[i].ToString(); }
+                    }
                 }
             }
 
@@ -639,6 +645,12 @@ namespace TimeOrganiser
             try { aBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
             catch (ArgumentException e) { MessageBox.Show(e.Message); }
             finally { aBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            base.OnClosing(e);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace TimeOrganiser
         int packedLine = 2;
         int unpackedLine = 18;
         SegmentWindow actualSegmentWindow;
-        static ObservableCollection<Segment> ExistingSegments;
+        static ObservableCollection<Segment> ExistingSegments = new ObservableCollection<Segment>();
         static int lenOfSepSeg;
 
         //Start line
@@ -55,9 +55,8 @@ namespace TimeOrganiser
         {
             get
             {
-                if (AttemptedToSubmit && !((int.TryParse(MinuteText, out int min) && min >= 1 && min <= 60 && int.TryParse(HourText, out int hr) && hr >= 0 && hr <= 23) ||
-                    (int.TryParse(MinuteText, out int min2) && min2 == 0 && int.TryParse(HourText, out int hr2) && hr2 >= 0 && hr2 <= 24) ||
-                    (MinuteText.Length == 0 && int.TryParse(HourText, out int hr3) && hr3 >= 0 && hr3 <= 24)))
+                if (AttemptedToSubmit && !((int.TryParse(MinuteText, out int min) && min >= 0 && min < 60 && int.TryParse(HourText, out int hr) && hr >= 0 && hr <= 23) ||
+                    (MinuteText.Length == 0 && int.TryParse(HourText, out int hr2) && hr2 >= 0 && hr2 <= 23)))
                 { return "Invalid time format"; }
                 else { return ""; }
             }
@@ -67,9 +66,9 @@ namespace TimeOrganiser
         {
             ExistingSegments = aExistingSegments;
             lenOfSepSeg = aLengthOfSeparatingSegment;
+            InitializeComponent();
             ExistingSegmentsView.DataContext = ExistingSegments;
             InsideSegmentsView.DataContext = ThisBar.Content;
-            InitializeComponent();
         }
 
         private void RightButt_Click(object sender, RoutedEventArgs e)
@@ -88,7 +87,7 @@ namespace TimeOrganiser
             actualSegmentWindow.ShowDialog();
             if (actualSegmentWindow.HandedIn)
             {
-                ThisBar.Content.Add(new Segment(actualSegmentWindow.TitleText, actualSegmentWindow.DescrText,
+                ExistingSegments.Add(new Segment(actualSegmentWindow.TitleText, actualSegmentWindow.DescrText,
                     int.Parse(actualSegmentWindow.DurText), ColorWithName.MyColors[actualSegmentWindow.ColorPick.SelectedIndex].Word,
                     ColorWithName.MyColors[actualSegmentWindow.ColorPick.SelectedIndex].Color.Color));
             }
@@ -108,6 +107,7 @@ namespace TimeOrganiser
 
         private void CreateButt_Click(object sender, RoutedEventArgs e)
         {
+            AttemptedToSubmit = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StartErrText"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StartErrVis"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("StartErrHeigth"));
@@ -127,7 +127,7 @@ namespace TimeOrganiser
                 }
                 else { MessageBox.Show("Sum of durations of new Bar's segments (starting at given start point of the day)\nexceeds 24 hours of Earth's rotation (of the day)."); } 
             } 
-            else { MessageBox.Show("Text boxes in Start fiels contain invalid values."); }
+            else { MessageBox.Show("Some text box in Start field contain invalid values."); }
         }
 
         private void CancelButt_Click(object sender, RoutedEventArgs e)

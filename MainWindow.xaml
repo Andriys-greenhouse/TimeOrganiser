@@ -28,10 +28,10 @@
                   SelectionChanged="Bar_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <Label Background="{Binding BackgroundColor}">
+                    <Label Background="{Binding ShowColor}">
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
-                            <TextBlock Text="{Binding Lenght}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Title}" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding Description}" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Label>
                 </DataTemplate>
@@ -48,7 +48,7 @@
                   SelectionChanged="Bar_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <Label Width="{Binding ShowLength}" Background="{Binding BackgroundColor}" Margin="-4.5, 0"/>
+                    <Label Width="{Binding ShowLength}" Background="{Binding ShowColor}" Margin="-4.5, 0"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.ItemsPanel>
@@ -77,7 +77,7 @@
             <TextBlock Text="Title:"/>
             <TextBlock Text="{Binding Title}" Margin="8,1" FontSize="14"/>
             <TextBlock Text="Description:"/>
-            <TextBlock Text="{Binding Description}" Margin="8,1" FontSize="14"/>
+            <TextBlock Text="{Binding Description}" Margin="8,1" FontSize="14" MaxWidth="200" TextWrapping="Wrap"/>
             <TextBlock Text="Deadline:"/>
             <TextBlock Text="{Binding DeadlineFormated}" Margin="8,1" FontSize="14"/>
             <TextBlock Text="Importance:"/>

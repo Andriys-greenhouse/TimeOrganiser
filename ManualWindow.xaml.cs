@@ -33,6 +33,7 @@ namespace TimeOrganiser
 
         public ManualWindow()
         {
+            DataContext = this;
             InitializeComponent();
         }
 

@@ -33,7 +33,7 @@
                   ItemsSource="{Binding .}" MouseDoubleClick="ExistingSegmentsView_MouseDoubleClick">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="{Binding Color}">
+                    <StackPanel Background="{Binding ShowColor}">
                         <TextBlock Text="{Binding Title}"/>
                         <TextBlock Text="{Binding Duration}"/>
                     </StackPanel>
@@ -44,7 +44,7 @@
                   ItemsSource="{Binding .}" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Background="{Binding Color}">
+                    <StackPanel Background="{Binding ShowColor}">
                         <TextBlock Text="{Binding Title}"/>
                         <TextBlock Text="{Binding Duration}"/>
                     </StackPanel>

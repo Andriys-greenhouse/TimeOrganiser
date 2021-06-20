@@ -40,7 +40,7 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Description: " FontSize="16"/>
                 <TextBox x:Name="DescrTextBox" Text="{Binding DescrText, UpdateSourceTrigger=PropertyChanged}" TextChanged="DescrTextBox_TextChanged"
-                         Width="150" Height="50"/>
+                         Width="150" MinHeight="50" TextWrapping="Wrap"/>
             </StackPanel>
             <TextBlock x:Name="DescrErr" Visibility="{Binding DescrErrVis, UpdateSourceTrigger=PropertyChanged}" 
                        Text="{Binding DescrErrText, UpdateSourceTrigger=PropertyChanged}"  Foreground="Red"

@@ -25,21 +25,21 @@
         <TextBlock Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="Manual" FontSize="21"/>
         <StackPanel x:Name="MainText" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <TextBlock Text="About" FontSize="16"/>
-            <TextBlock Text="{Binding AboutDescr}"/>
+            <TextBlock Text="{Binding AboutDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Task" FontSize="16"/>
-            <TextBlock Text="{Binding TaskDescr}"/>
+            <TextBlock Text="{Binding TaskDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Bar" FontSize="16"/>
-            <TextBlock Text="{Binding BarDescr}"/>
+            <TextBlock Text="{Binding BarDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Segment" FontSize="16"/>
-            <TextBlock Text="{Binding SegmentDescr}"/>
+            <TextBlock Text="{Binding SegmentDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Settings" FontSize="16"/>
-            <TextBlock Text="{Binding SettingsDescr}"/>
+            <TextBlock Text="{Binding SettingsDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Main Window" FontSize="16"/>
-            <TextBlock Text="{Binding MainWindowDescr}"/>
+            <TextBlock Text="{Binding MainWindowDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="New Bar Window" FontSize="16"/>
-            <TextBlock Text="{Binding NewBarWindowDescr}"/>
+            <TextBlock Text="{Binding NewBarWindowDescr}" TextWrapping="Wrap"/>
             <TextBlock Text="Saving Mechanism" FontSize="16"/>
-            <TextBlock Text="{Binding SavingMechanismDescr}"/>
+            <TextBlock Text="{Binding SavingMechanismDescr}" TextWrapping="Wrap"/>
         </StackPanel>
         <Button x:Name="OkButt" Grid.Column="2" Grid.Row="3" Content="OK" Click="OkButt_Click"/>
     </Grid>
