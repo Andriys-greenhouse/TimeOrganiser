@@ -57,6 +57,7 @@
     </ApplicationDefinition>
     <Compile Include="Bar.cs" />
     <Compile Include="ColorWithName.cs" />
+    <Compile Include="LoadingResult.cs" />
     <Compile Include="ManualWindow.xaml.cs">
       <DependentUpon>ManualWindow.xaml</DependentUpon>
     </Compile>
