@@ -26,20 +26,28 @@ namespace TimeOrganiser
         Bar CurentBar { get; set; } = new Bar(new DateTime(2021, 5, 9, 8, 0, 0), new ObservableCollection<Segment>());
         ObservableCollection<Task> Tasks { get; set; } = new ObservableCollection<Task>();
         ObservableCollection<Segment> Segments { get; set; } = new ObservableCollection<Segment>();
-        public int TimeFactor { get; set; } = 1;
         public int ImportanceFactor { get; set; } = 3;
+        public int TimeFactor { get; set; } = 1;
         public int LengthOfSepSegment { get; set; } = 15;
         TaskWindow CurentTaskWindow;
         SettingsWindow CurentSettingsWindow;
         NewBarWindow CurentNewBarWindow;
         ManualWindow CurentManualWindow = new ManualWindow();
+        LoadingResult CurentLoadingResult = new LoadingResult();
 
         public event PropertyChangedEventHandler PropertyChanged;
         public MainWindow()
         {
             InitializeComponent();
 
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
+
 
             if (CurentBar.Content.Count == 0)
             {
@@ -95,7 +103,13 @@ namespace TimeOrganiser
             }
 
             SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
         }
 
         private void Bar_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -115,7 +129,13 @@ namespace TimeOrganiser
             }
 
             SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
         }
 
         private void TaskView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -138,7 +158,13 @@ namespace TimeOrganiser
             }
 
             SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
         }
 
         private void NewTaskButt_Click(object sender, RoutedEventArgs e)
@@ -158,7 +184,13 @@ namespace TimeOrganiser
             }
 
             SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
         }
 
         private void NewBarButt_Click(object sender, RoutedEventArgs e)
@@ -179,7 +211,13 @@ namespace TimeOrganiser
             }
 
             SaveAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
-            LoadAll(Tasks, Segments, ImportanceFactor, TimeFactor, LengthOfSepSegment, CurentBar);
+            CurentLoadingResult = LoadAll();
+            CurentBar = CurentLoadingResult.InsideBar;
+            Tasks = CurentLoadingResult.InsideTasks;
+            Segments = CurentLoadingResult.InsideSegments;
+            ImportanceFactor = CurentLoadingResult.InsideImportanceFactor;
+            TimeFactor = CurentLoadingResult.InsideTimeFactor;
+            LengthOfSepSegment = CurentLoadingResult.InsideLengthOfSepSegment;
         }
 
         private void ManualButt_Click(object sender, RoutedEventArgs e)
@@ -594,8 +632,9 @@ namespace TimeOrganiser
             SaveBar("Bar-TimeOrganiser.txt", aBar, separator, key);
         }
 
-        public static void LoadAll(ObservableCollection<Task> aTasks, ObservableCollection<Segment> aSegments, int aImportanceFactor, int aTimeFactor, int aLenOfSepSeg, Bar aBar)
+        public static LoadingResult LoadAll()
         {
+            LoadingResult final = new LoadingResult();
             char separator = '|';
             string key = "L2IMwT16HGjbjbc6W9QUxabHCpJTWqY9qQEqPKx6VhziM21vqorfzVgqHX5nSjojLDI5QXl0bJ2FCmYAFQqErgRKhZwzfUmrFma6t0SNcOkU0N5mW2TlQ4PyqP9r5vJdt67yfe5EesvyvE9tTCd1DoU2w" +
                 "j9WhRE597BJPKI13LPLvXMS4WkUpermDKx3hnBZXoVOl92HH9SkADCyoXpkupoY51FikLZ94ow8tS393wKj0S3vZR7y9gzcVp8OVCfBI2WadRlYX499cvE8CJLbSqQci5c5BFVZWdS6mlSQdbwPvrwcdGc83yjCwXND" +
@@ -603,48 +642,50 @@ namespace TimeOrganiser
                 "TqfEoAOJ84ickfnmK24BBDyOuMcQRQtyzMpEZuum1A88PfhFI4isk4sLiBvCvx7uRgNebnrDATCKg9VhPRgyZnWlTrm1pzMJ8SdBU9ja4EXrwoljD9fnwJmto0Buo35Igr7qvlFgeO6KIS9Nm6cE4VylVwJ8e8u7oMg" +
                 "n5toUVlbZhTMYwGYX8qEZhi0GNOIfekLutEw6yi99RGg9pp7LZZjBZSOiq9s7dsNNuJbE2eUNiUing8N6R3clw0m5WSICScz4UymFyNhC1TK8suqfblzfz6wsJNS6RjnyNDCk5VaWyPiFMfXyvqWtujfwXuv0tzv3tgD" +
                 "OnzyWK9TjVECDKraO4ftu3KTcv8H0EoV7cEVa7g7t6iil4GJqFafNvBgTPdAx9v39RxiIjb6PruNecjEyitqIcjKtFdoKTyfIBopmAQj8DCwPA5VH8898jjZqyIayTPMKD3KP0sjFikmzWLZGePr4dh82KFnXPgoCbfmTqfbzhETYXnZL1rVV0FzVeyJqigIp9";
-            
-            try 
-            {
-                List<Task> tasks = new List<Task>();
-                aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
-                tasks = aTasks.ToList();
-                tasks.Sort((x, y) => y.ValueToCompare(aImportanceFactor, aTimeFactor).CompareTo(x.ValueToCompare(aImportanceFactor, aTimeFactor)));
-                aTasks = new ObservableCollection<Task>(tasks);
-            }
-            catch (ArgumentException e) { MessageBox.Show(e.Message); }
-            finally 
-            {
-                List<Task> tasks = new List<Task>();
-                aTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
-                tasks = aTasks.ToList();
-                tasks.Sort((x, y) => y.ValueToCompare(aImportanceFactor, aTimeFactor).CompareTo(x.ValueToCompare(aImportanceFactor, aTimeFactor)));
-                aTasks = new ObservableCollection<Task>(tasks);
-            }
 
-            try { aSegments = LoadSegments("Segments-TimeOrganiser.txt", separator, key); }
-            catch (ArgumentException e) { MessageBox.Show(e.Message); }
-            finally { aSegments = LoadSegments("Segments-TimeOrganiser.txt", separator, key); }
-
-            try 
-            { 
+            try
+            {
                 int[] res = LoadSettings("Settings-TimeOrganiser.txt", separator, key);
-                aImportanceFactor = res[0];
-                aTimeFactor = res[1];
-                aLenOfSepSeg = res[2];
+                final.InsideImportanceFactor = res[0];
+                final.InsideTimeFactor = res[1];
+                final.InsideLengthOfSepSegment = res[2];
             }
             catch (ArgumentException e) { MessageBox.Show(e.Message); }
             finally
             {
                 int[] res = LoadSettings("Settings-TimeOrganiser.txt", separator, key);
-                aImportanceFactor = res[0];
-                aTimeFactor = res[1];
-                aLenOfSepSeg = res[2];
+                final.InsideImportanceFactor = res[0];
+                final.InsideTimeFactor = res[1];
+                final.InsideLengthOfSepSegment = res[2];
             }
 
-            try { aBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
+            try 
+            {
+                List<Task> tasks = new List<Task>();
+                final.InsideTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
+                tasks = final.InsideTasks.ToList();
+                tasks.Sort((x, y) => y.ValueToCompare(final.InsideImportanceFactor, final.InsideTimeFactor).CompareTo(x.ValueToCompare(final.InsideImportanceFactor, final.InsideTimeFactor)));
+                final.InsideTasks = new ObservableCollection<Task>(tasks);
+            }
             catch (ArgumentException e) { MessageBox.Show(e.Message); }
-            finally { aBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
+            finally 
+            {
+                List<Task> tasks = new List<Task>();
+                final.InsideTasks = LoadTasks("Tasks-TimeOrganiser.txt", separator, key);
+                tasks = final.InsideTasks.ToList();
+                tasks.Sort((x, y) => y.ValueToCompare(final.InsideImportanceFactor, final.InsideTimeFactor).CompareTo(x.ValueToCompare(final.InsideImportanceFactor, final.InsideTimeFactor)));
+                final.InsideTasks = new ObservableCollection<Task>(tasks);
+            }
+
+            try { final.InsideSegments = LoadSegments("Segments-TimeOrganiser.txt", separator, key); }
+            catch (ArgumentException e) { MessageBox.Show(e.Message); }
+            finally { final.InsideSegments = LoadSegments("Segments-TimeOrganiser.txt", separator, key); }
+
+            try { final.InsideBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
+            catch (ArgumentException e) { MessageBox.Show(e.Message); }
+            finally { final.InsideBar = LoadBar("Bar-TimeOrganiser.txt", separator, key); }
+
+            return final;
         }
 
         protected override void OnClosing(CancelEventArgs e)
