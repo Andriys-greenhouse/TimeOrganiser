@@ -347,9 +347,8 @@ namespace TimeOrganiser
         //Segments
         public static void SaveSegments(string aPath, ObservableCollection<Segment> aSegments, char aSeparator, string aKey)
         {
-            string line = "";
-            StringBuilder sb = new StringBuilder(line); //it is faster than commutation of strings
-            string listOfLines = "";
+            StringBuilder sb = new StringBuilder(); //it is faster than commutation of strings
+            StringBuilder complete = new StringBuilder();
 
             foreach (Segment segment in aSegments)
             {
@@ -368,14 +367,12 @@ namespace TimeOrganiser
                 sb.Append(segment.BackgroundColor.ToString());
 
                 sb.Append("\n");
-                listOfLines += sb.ToString();
+                complete.Append(sb.ToString());
             }
-
-            listOfLines = Crypt(listOfLines, aKey);
 
             using (StreamWriter sr = new StreamWriter(aPath))
             {
-                sr.Write(listOfLines);
+                sr.Write(Crypt(complete.ToString(), aKey));
             }
         }
 
