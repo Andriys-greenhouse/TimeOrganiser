@@ -69,6 +69,9 @@ namespace TimeOrganiser
             InitializeComponent();
             ExistingSegmentsView.DataContext = ExistingSegments;
             InsideSegmentsView.DataContext = ThisBar.Content;
+            HourBox.DataContext = this;
+            MinuteBox.DataContext = this;
+            StartErr.DataContext = this;
         }
 
         private void RightButt_Click(object sender, RoutedEventArgs e)
