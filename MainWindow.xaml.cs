@@ -72,6 +72,7 @@ namespace TimeOrganiser
                 Tasks.Add(new Task("World", "", 7, new DateTime(2021, 6, 10, 12, 0, 0)));
             }
 
+            DataContext = this;
             RealBar.DataContext = CurentBar;
             DetailBar.DataContext = CurentBar;
             TaskView.DataContext = Tasks;
@@ -254,9 +255,8 @@ namespace TimeOrganiser
         //Task
         public static void SaveTasks(string aPath, ObservableCollection<Task> aTasks, char aSeparator, string aKey)
         {
-            string line = "";
-            StringBuilder sb = new StringBuilder(line); //it is faster than commutation of strings
-            string listOfLines = "";
+            StringBuilder sb = new StringBuilder(""); //it is faster than commutation of strings
+            StringBuilder SBOfLines = new StringBuilder("");
 
             foreach (Task task in aTasks)
             {
@@ -275,19 +275,19 @@ namespace TimeOrganiser
                 sb.Append(task.Deadline.ToString("yyyy-MM-dd-HH-mm-ss"));
 
                 sb.Append("\n");
-                listOfLines += sb.ToString();
-            }
 
-            listOfLines = Crypt(listOfLines, aKey);
+                SBOfLines.Append(sb.ToString());
+            }
 
             using (StreamWriter sr = new StreamWriter(aPath))
             {
-                sr.Write(listOfLines);
+                sr.Write(Crypt(SBOfLines.ToString(), aKey));
             }
         }
 
         public static ObservableCollection<Task> LoadTasks(string aFilename, char aSeparator, string aKey) //filename means path
         {
+            //pokračovat zde
             if (!File.Exists(aFilename))
             {
                 using (StreamWriter sr = new StreamWriter(aFilename)) { }
@@ -437,9 +437,7 @@ namespace TimeOrganiser
         //Settings
         public static void SaveSettings(string aPath, int aImportanceFactor, int aTimeFactor,int aLenOfSepSeg, char aSeparator, string aKey)
         {
-            string line = "";
-            StringBuilder sb = new StringBuilder(line);
-            string listOfLines = "";
+            StringBuilder sb = new StringBuilder("");
 
             sb.Append(aSeparator.ToString());
             sb.Append(aImportanceFactor.ToString());
@@ -448,13 +446,9 @@ namespace TimeOrganiser
             sb.Append(aSeparator.ToString());
             sb.Append(aLenOfSepSeg.ToString());
 
-            listOfLines += sb.ToString();
-
-            listOfLines = Crypt(listOfLines, aKey);
-
             using (StreamWriter sr = new StreamWriter(aPath))
             {
-                sr.Write(listOfLines);
+                sr.Write(Crypt(sb.ToString(), aKey));
             }
         }
 
